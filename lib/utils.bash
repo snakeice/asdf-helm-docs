@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for helm-docs.
 GH_REPO="https://github.com/norwoodj/helm-docs"
 TOOL_NAME="helm-docs"
 TOOL_TEST="helm-docs --help"
@@ -31,18 +30,17 @@ list_github_tags() {
 }
 
 list_all_versions() {
-	# TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-	# Change this function if helm-docs has other means of determining installable versions.
 	list_github_tags
 }
 
 download_release() {
-	local version filename url
+	local version filename url platform arch
 	version="$1"
 	filename="$2"
+	platform="$(uname -s)"
+	arch="$(uname -m)"
 
-	# TODO: Adapt the release URL convention for helm-docs
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	url="$GH_REPO/releases/download/v$version/helm-docs_${platform}_${arch}.tar.gz"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -56,7 +54,6 @@ install_version() {
 	if [ "$install_type" != "version" ]; then
 		fail "asdf-$TOOL_NAME supports release installs only"
 	fi
-
 	(
 		mkdir -p "$install_path"
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
