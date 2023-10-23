@@ -40,7 +40,7 @@ download_release() {
 	platform="$(uname -s)"
 	arch="$(uname -m)"
 
-	url="$GH_REPO/releases/download/v$version/helm-docs_${platform}_${arch}.tar.gz"
+	url="$GH_REPO/releases/download/v$version/helm-docs_${version}_${platform}_${arch}.tar.gz"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
